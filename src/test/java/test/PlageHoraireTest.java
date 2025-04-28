@@ -39,6 +39,7 @@ public class PlageHoraireTest {
     void duree(){
         assertTrue(plageHoraire1.duree().compareTo(new Horaire(5, 15)) == 0);
         assertTrue(plageHoraire3.duree().compareTo(new Horaire(8, 0)) == 0);
+        assertTrue(plageHoraire4.duree().compareTo(new Horaire(1, 0)) == 0);
     }
 
 }

@@ -7,7 +7,14 @@ public class PlageHoraire implements Comparable<PlageHoraire> {
     private Horaire chHoraireDebut;
     private Horaire chHoraireFin;
 
-    public PlageHoraire(Horaire parHoraireDebut, Horaire parHoraireFin) {
+    public PlageHoraire(Horaire parHoraireDebut, Horaire parHoraireFin) throws ExceptionPlageHoraire {
+
+        if (!(parHoraireDebut.estValide() && parHoraireFin.estValide()) ||
+                parHoraireFin.toMinutes() <= parHoraireDebut.toMinutes() ||
+                (parHoraireFin.toMinutes() - parHoraireDebut.toMinutes()) < DUREE_MIN) {
+            throw new ExceptionPlageHoraire("Plage horaire invalide ou durée trop courte");
+        }
+
 
         chHoraireDebut = parHoraireDebut;
         chHoraireFin = parHoraireFin;

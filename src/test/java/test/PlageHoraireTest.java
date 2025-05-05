@@ -1,5 +1,6 @@
 package test;
 
+import modele.ExceptionPlageHoraire;
 import modele.Horaire;
 import modele.PlageHoraire;
 
@@ -10,6 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(OrderAnnotation.class)
 public class PlageHoraireTest {
+    public PlageHoraireTest() throws ExceptionPlageHoraire {
+    }
+
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         System.out.println("setup");
@@ -43,7 +47,7 @@ public class PlageHoraireTest {
     }
 
     @org.junit.jupiter.api.Test
-    void compareToSuccesion() {
+    void compareToSuccesion() throws ExceptionPlageHoraire {
         // Plages succesives
         Horaire Horaire1Debut = new Horaire(9, 0);  // 9h00
         Horaire Horaire1Fin = new Horaire(10, 0);   // 10h00
@@ -58,7 +62,7 @@ public class PlageHoraireTest {
     }
 
     @org.junit.jupiter.api.Test
-    void compareToChevauchement() {
+    void compareToChevauchement() throws ExceptionPlageHoraire {
         // Plages qui se chevauchent
         Horaire Horaire3Debut = new Horaire(9, 0);  // 9h00
         Horaire Horaire3Fin = new Horaire(10, 0);   // 10h00
@@ -73,7 +77,7 @@ public class PlageHoraireTest {
     }
 
     @org.junit.jupiter.api.Test
-    void compareToEgalite() {
+    void compareToEgalite() throws ExceptionPlageHoraire {
         // Plages égales
         Horaire Horaire5Debut = new Horaire(9, 0);  // 9h00
         Horaire Horaire5Fin = new Horaire(10, 0);   // 10h00
@@ -88,7 +92,7 @@ public class PlageHoraireTest {
     }
 
     @org.junit.jupiter.api.Test
-    void compareToInclusion() {
+    void compareToInclusion() throws ExceptionPlageHoraire {
         // Plage 1 est incluse dans Plage 2
         Horaire Horaire7Debut = new Horaire(9, 0);  // 9h00
         Horaire Horaire7Fin = new Horaire(10, 0);   // 10h00
@@ -103,5 +107,59 @@ public class PlageHoraireTest {
 
     }
 
+    @org.junit.jupiter.api.Test
+    void testConstructeurPlageHoraire() throws ExceptionPlageHoraire {
+        Horaire startHoraire = new Horaire(9, 0);  // 9h00
+        Horaire endHoraire = new Horaire(10, 0);   // 10h00
+        PlageHoraire plage = new PlageHoraire(startHoraire, endHoraire);
 
+        assertNotNull(plage);  // vérifie que l'objet n'est pas nul
+    }
+
+    @org.junit.jupiter.api.Test
+    void testConstructeurPlageHoraireValide() {
+        // Horaire de début et de fin valides
+        Horaire startHoraire = new Horaire(9, 0);  // 9h00
+        Horaire endHoraire = new Horaire(9, 30);   // 9h30 (durée de 30 minutes)
+
+        // la plage horaire est bien créée sans exception
+        assertDoesNotThrow(() -> {
+            new PlageHoraire(startHoraire, endHoraire);
+        });
+    }
+
+    // la durée est inférieure à la durée minimale de 30 minutes
+    @org.junit.jupiter.api.Test
+    void testConstructeurPlageHoraireDureeTropCourte() {
+        Horaire startHoraire = new Horaire(9, 0);  // 9h00
+        Horaire endHoraire = new Horaire(9, 15);   // 9h15, durée de 15 minutes
+
+        // Vérification de l'exception levée : durée trop courte
+        assertThrows(ExceptionPlageHoraire.class, () -> {
+            new PlageHoraire(startHoraire, endHoraire);
+        });
+    }
+
+    // l'heure de fin est avant l'heure de début
+    @org.junit.jupiter.api.Test
+    void testConstructeurPlageHoraireFinAvantDebut() {
+        Horaire startHoraire = new Horaire(10, 0);  // 10h00
+        Horaire endHoraire = new Horaire(9, 30);    // 9h30
+
+        assertThrows(ExceptionPlageHoraire.class, () -> {
+            new PlageHoraire(startHoraire, endHoraire);
+        });
+    }
+
+    // l'un des horaires est invalide
+    @org.junit.jupiter.api.Test
+    void testConstructeurPlageHoraireHoraireInvalide() {
+        // Horaire de début valide et horaire de fin invalide
+        Horaire startHoraire = new Horaire(9, 0);   // 9h00
+        Horaire endHoraire = new Horaire(9, 7);     // 9h07
+
+        assertThrows(ExceptionPlageHoraire.class, () -> {
+            new PlageHoraire(startHoraire, endHoraire);  // pas un quart d'heure valide
+        });
+    }
 }

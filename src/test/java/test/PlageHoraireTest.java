@@ -42,4 +42,57 @@ public class PlageHoraireTest {
         assertTrue(plageHoraire4.duree().compareTo(new Horaire(1, 0)) == 0);
     }
 
+    @org.junit.jupiter.api.Test
+    void compareTo() {
+        // Plages succesives
+        Horaire Horaire1Debut = new Horaire(9, 0);  // 9h00
+        Horaire Horaire1Fin = new Horaire(10, 0);   // 10h00
+        PlageHoraire plage1 = new PlageHoraire(Horaire1Debut, Horaire1Fin);
+
+        Horaire Horaire2Debut = new Horaire(10, 0);  // 10h00
+        Horaire Horaire2Fin = new Horaire(11, 0);    // 11h00
+        PlageHoraire plage2 = new PlageHoraire(Horaire2Debut, Horaire2Fin);
+
+        assertEquals(-1, plage1.compareTo(plage2));  // plage1 précède plage2
+        assertEquals(1, plage2.compareTo(plage1));   // plage2 suit plage1
+
+        // Plages qui se chevauchent
+        Horaire Horaire3Debut = new Horaire(9, 0);  // 9h00
+        Horaire Horaire3Fin = new Horaire(10, 0);   // 10h00
+        PlageHoraire plage3 = new PlageHoraire(Horaire3Debut, Horaire3Fin);
+
+        Horaire Horaire4Debut = new Horaire(9, 30);  // 9h30
+        Horaire Horaire4Fin = new Horaire(10, 30);   // 10h30
+        PlageHoraire plage4 = new PlageHoraire(Horaire4Debut, Horaire4Fin);
+
+        assertEquals(0, plage3.compareTo(plage4));  // Les plages se chevauchent
+        assertEquals(0, plage4.compareTo(plage3));  // Les plages se chevauchent
+
+        // Plages égales
+        Horaire Horaire5Debut = new Horaire(9, 0);  // 9h00
+        Horaire Horaire5Fin = new Horaire(10, 0);   // 10h00
+        PlageHoraire plage5 = new PlageHoraire(Horaire5Debut, Horaire5Fin);
+
+        Horaire Horaire6Debut = new Horaire(9, 0);  // 9h00
+        Horaire Horaire6Fin = new Horaire(10, 0);   // 10h00
+        PlageHoraire plage6 = new PlageHoraire(Horaire6Debut, Horaire6Fin);
+
+        assertEquals(0, plage5.compareTo(plage6));  // Les plages sont égales
+        assertEquals(0, plage6.compareTo(plage5));  // Les plages sont égales
+
+        // Plage 1 est incluse dans Plage 2
+        Horaire Horaire7Debut = new Horaire(9, 0);  // 9h00
+        Horaire Horaire7Fin = new Horaire(10, 0);   // 10h00
+        PlageHoraire plage7 = new PlageHoraire(Horaire7Debut, Horaire7Fin);
+
+        Horaire Horaire8Debut = new Horaire(9, 15);  // 9h15
+        Horaire Horaire8Fin = new Horaire(9, 45);   // 9h45
+        PlageHoraire plage8 = new PlageHoraire(Horaire8Debut, Horaire8Fin);
+
+        assertEquals(0, plage7.compareTo(plage8));  // plage7 contient plage8
+        assertEquals(0, plage8.compareTo(plage7)); // plage8 est incluse dans plage7
+
+    }
+
+
 }

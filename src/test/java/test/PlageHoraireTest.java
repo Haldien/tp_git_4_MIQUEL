@@ -43,7 +43,7 @@ public class PlageHoraireTest {
     }
 
     @org.junit.jupiter.api.Test
-    void compareTo() {
+    void compareToSuccesion() {
         // Plages succesives
         Horaire Horaire1Debut = new Horaire(9, 0);  // 9h00
         Horaire Horaire1Fin = new Horaire(10, 0);   // 10h00
@@ -55,7 +55,10 @@ public class PlageHoraireTest {
 
         assertEquals(-1, plage1.compareTo(plage2));  // plage1 précède plage2
         assertEquals(1, plage2.compareTo(plage1));   // plage2 suit plage1
+    }
 
+    @org.junit.jupiter.api.Test
+    void compareToChevauchement() {
         // Plages qui se chevauchent
         Horaire Horaire3Debut = new Horaire(9, 0);  // 9h00
         Horaire Horaire3Fin = new Horaire(10, 0);   // 10h00
@@ -67,7 +70,10 @@ public class PlageHoraireTest {
 
         assertEquals(0, plage3.compareTo(plage4));  // Les plages se chevauchent
         assertEquals(0, plage4.compareTo(plage3));  // Les plages se chevauchent
+    }
 
+    @org.junit.jupiter.api.Test
+    void compareToEgalite() {
         // Plages égales
         Horaire Horaire5Debut = new Horaire(9, 0);  // 9h00
         Horaire Horaire5Fin = new Horaire(10, 0);   // 10h00
@@ -79,7 +85,10 @@ public class PlageHoraireTest {
 
         assertEquals(0, plage5.compareTo(plage6));  // Les plages sont égales
         assertEquals(0, plage6.compareTo(plage5));  // Les plages sont égales
+    }
 
+    @org.junit.jupiter.api.Test
+    void compareToInclusion() {
         // Plage 1 est incluse dans Plage 2
         Horaire Horaire7Debut = new Horaire(9, 0);  // 9h00
         Horaire Horaire7Fin = new Horaire(10, 0);   // 10h00
